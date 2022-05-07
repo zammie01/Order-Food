@@ -1,13 +1,13 @@
 import 'package:food_order/data/api/api_client.dart';
+import 'package:food_order/utils/api_docs.dart';
 import 'package:get/get.dart';
 
 class PopularProductRepo extends GetxService {
-  final ApiCLient apiCLient;
+  final ApiClient apiClient;
 
-  PopularProductRepo({required this.apiCLient});
+  PopularProductRepo({required this.apiClient});
 
   Future<Response> getPopularProductList() async {
-    return await apiCLient
-        .getData("http://mvs.bslmeiyu.com/api/v1/products/popular");
+    return await apiClient.getData(ApiDocs.POPULAR_PRODUCTS_URI);
   }
 }

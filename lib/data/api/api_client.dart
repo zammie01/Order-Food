@@ -1,12 +1,14 @@
+import 'package:food_order/utils/api_docs.dart';
 import 'package:get/get.dart';
 
-class ApiCLient extends GetConnect implements GetxService {
+class ApiClient extends GetConnect implements GetxService {
   late String token;
   final String appBaseUrl;
   late Map<String, String> _mainHeaders;
-  ApiCLient({required this.appBaseUrl}) {
+  ApiClient({required this.appBaseUrl}) {
     baseUrl = appBaseUrl;
     timeout = const Duration(seconds: 30);
+    token = ApiDocs.TOKEN;
     _mainHeaders = {
       'Content-type': 'application/json; charset = UTF-8',
       'Authorization': 'bearer $token',
