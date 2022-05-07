@@ -7,6 +7,7 @@ import 'package:food_order/widgets/app_icons.dart';
 import 'package:food_order/widgets/big_text.dart';
 import 'package:food_order/widgets/expandable_text.dart';
 import 'package:food_order/widgets/small_text.dart';
+import 'package:get/get.dart';
 
 class PopularFoodDetails extends StatelessWidget {
   const PopularFoodDetails({Key? key}) : super(key: key);
@@ -37,7 +38,12 @@ class PopularFoodDetails extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AppIcon(icon: Icons.arrow_back_ios),
+                GestureDetector(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: AppIcon(icon: Icons.arrow_back_ios),
+                ),
                 AppIcon(icon: Icons.shopping_cart_outlined)
               ],
             ),
