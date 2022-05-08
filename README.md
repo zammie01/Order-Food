@@ -1,6 +1,5 @@
 # food_order
-
-A new Flutter project.
+Order food.
 
 ## Getting Started
 
