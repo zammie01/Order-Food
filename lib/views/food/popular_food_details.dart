@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:food_order/controllers/popular_product_controller.dart';
+import 'package:food_order/utils/api_docs.dart';
 import 'package:food_order/utils/colors.dart';
 import 'package:food_order/utils/dimesions.dart';
-import 'package:food_order/widgets/Icon_and_text_widget.dart';
 import 'package:food_order/widgets/app_column.dart';
 import 'package:food_order/widgets/app_icons.dart';
 import 'package:food_order/widgets/big_text.dart';
 import 'package:food_order/widgets/expandable_text.dart';
-import 'package:food_order/widgets/small_text.dart';
 import 'package:get/get.dart';
 
 class PopularFoodDetails extends StatelessWidget {
-  const PopularFoodDetails({Key? key}) : super(key: key);
+  int pageId;
+  PopularFoodDetails({Key? key, required this.pageId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var product =
+        Get.find<PopularProductController>().popularProductList[pageId];
+    //print("page id is " + pageId.toString());
+    //print("Product name is " + product.name.toString());
     return Scaffold(
       body: Stack(
         children: [
@@ -26,7 +31,8 @@ class PopularFoodDetails extends StatelessWidget {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage("assets/image/food0.png"),
+                  image: NetworkImage(
+                      ApiDocs.BASE_URL + ApiDocs.UPLOAD_URL + product.img!),
                 ),
               ),
             ),
@@ -68,15 +74,13 @@ class PopularFoodDetails extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppColumn(text: "Nigerian Side"),
+                  AppColumn(text: product.name!),
                   SizedBox(height: Dimensions.height20),
                   BigText(text: "Introduce"),
                   SizedBox(height: Dimensions.height20),
                   Expanded(
                       child: SingleChildScrollView(
-                    child: ExpandableText(
-                        text:
-                            "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."),
+                    child: ExpandableText(text: product.description!),
                   ))
                 ],
               ),
@@ -128,7 +132,9 @@ class PopularFoodDetails extends StatelessWidget {
               decoration: BoxDecoration(
                   color: AppColors.mainColor,
                   borderRadius: BorderRadius.circular(Dimensions.radius20)),
-              child: BigText(text: "\$10 | Add to cart", color: Colors.white),
+              child: BigText(
+                  text: "\$ ${product.price!} | Add to cart",
+                  color: Colors.white),
             )
           ],
         ),

@@ -1,28 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:food_order/controllers/recommended_product_controller.dart';
+import 'package:food_order/routes/route_helper.dart';
+import 'package:food_order/utils/api_docs.dart';
 import 'package:food_order/utils/colors.dart';
 import 'package:food_order/utils/dimesions.dart';
-import 'package:food_order/views/food/popular_food_details.dart';
 import 'package:food_order/widgets/app_icons.dart';
 import 'package:food_order/widgets/big_text.dart';
 import 'package:food_order/widgets/expandable_text.dart';
 import 'package:get/get.dart';
 
 class RecommendedFoodDetails extends StatelessWidget {
-  const RecommendedFoodDetails({Key? key}) : super(key: key);
+  int pageId;
+  RecommendedFoodDetails({Key? key, required this.pageId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var product =
+        Get.find<RecommendedProductController>().recommendedProductList[pageId];
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            automaticallyImplyLeading: false,
             toolbarHeight: 70,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AppIcon(icon: Icons.clear),
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(RouteHelper.getInitial());
+                  },
+                  child: AppIcon(
+                    icon: Icons.clear,
+                    size: 30,
+                  ),
+                ),
                 AppIcon(icon: Icons.shopping_cart_outlined),
               ],
             ),
@@ -39,15 +52,15 @@ class RecommendedFoodDetails extends StatelessWidget {
                   padding: EdgeInsets.only(top: 5, bottom: 10),
                   child: Center(
                     child:
-                        BigText(text: "Nigerian Side", size: Dimensions.font26),
+                        BigText(text: product.name!, size: Dimensions.font26),
                   ),
                 )),
             pinned: true,
             backgroundColor: AppColors.yellowColor,
             expandedHeight: 300,
             flexibleSpace: FlexibleSpaceBar(
-              background: Image.asset(
-                "assets/image/food0.png",
+              background: Image.network(
+                ApiDocs.BASE_URL + ApiDocs.UPLOAD_URL + product.img!,
                 width: double.maxFinite,
                 fit: BoxFit.cover,
               ),
@@ -57,9 +70,7 @@ class RecommendedFoodDetails extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  child: ExpandableText(
-                      text:
-                          "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristThere are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.ic words etc."),
+                  child: ExpandableText(text: product.description!),
                   margin: EdgeInsets.only(
                       left: Dimensions.width20, right: Dimensions.width20),
                 ),
@@ -102,7 +113,9 @@ class RecommendedFoodDetails extends StatelessWidget {
               decoration: BoxDecoration(
                   color: AppColors.mainColor,
                   borderRadius: BorderRadius.circular(Dimensions.radius20)),
-              child: BigText(text: "\$10 | Add to cart", color: Colors.white),
+              child: BigText(
+                  text: "\$ ${product.price!} | Add to cart",
+                  color: Colors.white),
             )
           ],
         ),
